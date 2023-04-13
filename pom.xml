@@ -148,7 +148,7 @@
         <dependency>
             <groupId>com.onarandombox.multiverseinventories</groupId>
             <artifactId>Multiverse-Inventories</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <version>4.2.3</version>
             <type>jar</type>
             <scope>provided</scope>
 
