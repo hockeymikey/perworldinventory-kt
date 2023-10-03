@@ -1,0 +1,54 @@
+name: Maven Build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - run: mvn --batch-mode --update-snapshots verify
+      - run: mkdir artifact && cp target/*.jar artifact
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Package
+          path: artifact
+
+      # Upload artifacts
+      - name: Upload Distributable Jar
+        id: upload-final
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: ./target/WooMinecraft.jar
+
+  release:
+    name: Create Github Release
+    needs: [ build ]
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Create Release
+        id: create-release
+        uses: softprops/action-gh-release@v0.1.5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: ${{ env.VERSIONED_NAME }}
+          body: ${{ env.GENERATED_CHANGELOG }}
+          draft: true
+          prerelease: false
+          files: ./dist/WooMinecraft.jar
