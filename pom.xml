@@ -16,7 +16,6 @@
     <properties>
         <!-- Project properties -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.jdkVersion>1.8</project.jdkVersion>
         <kotlin.version>1.3.71</kotlin.version>
 
         <!-- Output properties -->
@@ -82,7 +81,7 @@
         <dependency>
             <groupId>co.aikar</groupId>
             <artifactId>acf-paper</artifactId>
-            <version>0.5.0-SNAPSHOT</version>
+            <version>0.5.1-SNAPSHOT</version>
         </dependency>
 
         <!-- Spigot -->
