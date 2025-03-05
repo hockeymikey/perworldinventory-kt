@@ -10,6 +10,7 @@ import net.minidev.json.JSONStyle
 import net.minidev.json.parser.JSONParser
 import org.bukkit.GameMode
 import org.bukkit.Location
+import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import java.io.File
 import java.io.FileReader
@@ -133,6 +134,30 @@ class FlatFile @Inject constructor(@DataDirectory private val dataDirectory: Fil
                 SerializationHelper.deserialize(data) as PlayerProfile
             } else { // Old data format and methods
                 PlayerSerializer.deserialize(data, player.name, player.inventory.size, player.enderChest.size)
+            }
+        }
+    }
+    override fun getOfflinePlayer(key: ProfileKey, player: OfflinePlayer): PlayerProfile?
+    {
+        val file = getFile(key)
+
+        // If the file does not exist, the player hasn't been to this group before
+        if (!file.exists())  {
+            return null
+        }
+
+        if (player.name == null) {
+            return null
+        }
+
+        FileReader(file).use { reader ->
+            val parser = JSONParser(JSONParser.USE_INTEGER_STORAGE)
+            val data = parser.parse(reader) as JSONObject
+
+            return if (data.containsKey("==")) { // Data is from ConfigurationSerialization
+                SerializationHelper.deserialize(data) as PlayerProfile
+            } else { // Old data format and methods
+                PlayerSerializer.flexibleDeserialize(data, player.name!!)
             }
         }
     }

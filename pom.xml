@@ -6,7 +6,7 @@
 
     <groupId>me.ebonjaeger</groupId>
     <artifactId>perworldinventory-kt</artifactId>
-    <version>2.3.2</version>
+    <version>2.3.3</version>
 
     <name>PerWorldInventory</name>
     <description>Have a different inventory for each world.</description>
@@ -30,7 +30,7 @@
         <bukkitplugin.authors>EbonJaeger</bukkitplugin.authors>
 
         <!-- Change Bukkit Version HERE! -->
-        <bukkit.version>1.15-R0.1-SNAPSHOT</bukkit.version>
+        <bukkit.version>1.21.4-R0.1-SNAPSHOT</bukkit.version>
         <junit.jupiter.version>5.5.2</junit.jupiter.version>
     </properties>
 
@@ -258,12 +258,12 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>codemc-snapshots</id>
-            <url>https://repo.codemc.org/repository/maven-snapshots/</url>
+            <id>hockeymikey-snapshots</id>
+            <url>https://maven.hockeymikey.com/snapshots</url>
         </snapshotRepository>
         <repository>
-            <id>codemc-releases</id>
-            <url>https://repo.codemc.org/repository/maven-releases/</url>
+            <id>hockeymikey-releases</id>
+            <url>https://maven.hockeymikey.com/releases</url>
         </repository>
     </distributionManagement>
 
@@ -468,10 +468,9 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <target>8</target>
+                    <target>21</target>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
 </project>

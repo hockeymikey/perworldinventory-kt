@@ -12,6 +12,7 @@ import me.ebonjaeger.perworldinventory.service.BukkitService
 import me.ebonjaeger.perworldinventory.service.EconomyService
 import org.bukkit.Bukkit
 import org.bukkit.GameMode
+import org.bukkit.OfflinePlayer
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 import java.util.concurrent.TimeUnit
@@ -64,14 +65,13 @@ class ProfileManager @Inject constructor(private val bukkitService: BukkitServic
     }
 
     /**
-     * Get a player's data for a given [Group] and [GameMode], and set it to the player.
+     * Load a player's data for a given [Group] and [GameMode], and set it to the player.
      *
      * @param player The player to get stuff for
      * @param group The world group to load from
      * @param gameMode Which GameMode inventory to load
      */
-    // TODO: This should return a PlayerProfile instead of just setting stuff
-    fun getPlayerData(player: Player, group: Group, gameMode: GameMode)
+    fun loadPlayerData(player: Player, group: Group, gameMode: GameMode)
     {
         val gm = when {
             separateGameModes -> gameMode
@@ -105,6 +105,39 @@ class ProfileManager @Inject constructor(private val bukkitService: BukkitServic
 
         val event = InventoryLoadCompleteEvent(player, group, gm)
         Bukkit.getPluginManager().callEvent(event)
+    }
+
+    /**
+     * Get a player's data for a given [Group] and [GameMode]
+     *
+     * @param player The player to get stuff for
+     * @param group The world group to load from
+     * @param gameMode Which GameMode inventory to load
+     *
+     * @return PlayerProfile
+     */
+    fun getOfflinePlayerData(player: OfflinePlayer, group: Group, gameMode: GameMode): PlayerProfile? {
+        val gm = when {
+            separateGameModes -> gameMode
+            else -> GameMode.SURVIVAL
+        }
+
+        val key = ProfileKey(player.uniqueId, group, gm)
+
+        ConsoleLogger.fine("ProfileManager: Checking cache for player data for '${player.name}'")
+        ConsoleLogger.debug("ProfileManager: Checking with key: $key")
+        val cached = profileCache.getIfPresent(key)
+        if (cached != null) {
+            return cached
+        }
+
+        ConsoleLogger.fine("ProfileManager: Player '${player.name}' not in cache, loading from disk")
+        val data = dataSource.getOfflinePlayer(key, player)
+        if (data != null) {
+            return data
+        }
+
+        return null
     }
 
     /**

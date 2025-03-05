@@ -2,6 +2,7 @@ package me.ebonjaeger.perworldinventory.data
 
 import com.google.gson.JsonObject
 import org.bukkit.Location
+import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 
 interface DataSource
@@ -39,6 +40,15 @@ interface DataSource
      * @return A [JsonObject] with all of the player's information
      */
     fun getPlayer(key: ProfileKey, player: Player): PlayerProfile?
+
+    /**
+     * Retrieves an offline player's data from the database.
+     *
+     * @param key The [ProfileKey] to get the data for
+     * @param player The [OfflinePlayer] that the data will be applied to
+     * @return A [JsonObject] with all of the player's information
+     */
+    fun getOfflinePlayer(key: ProfileKey, player: OfflinePlayer): PlayerProfile?
 
     /**
      * Get the name of the world that a player logged out in.

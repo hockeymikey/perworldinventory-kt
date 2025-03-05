@@ -57,4 +57,51 @@ object PlayerSerializer
                 stats["remainingAir"] as Int,
                 balance)
     }
+
+    fun flexibleDeserialize(data: JSONObject, playerName: String): PlayerProfile
+    {
+        // Get the data format being used
+        var format = 3
+        if (data.containsKey("data-format"))
+        {
+            format = data["data-format"] as Int
+        }
+
+        val inventory = data["inventory"] as JSONObject
+        val items = InventoryHelper.flexiableDeserialize(inventory["inventory"] as JSONArray,
+            format)
+        val armor = InventoryHelper.deserialize(inventory["armor"] as JSONArray, 4, format)
+        val enderChest = InventoryHelper.flexiableDeserialize(data["ender-chest"] as JSONArray,
+            format)
+        val stats = StatSerializer.validateStats(data["stats"] as JSONObject, playerName)
+        val potionEffects = PotionSerializer.deserialize(stats["potion-effects"] as JSONArray)
+        val balance = if (data.containsKey("economy"))
+        {
+            EconomySerializer.deserialize(data["economy"] as JSONObject)
+        } else
+        {
+            0.0
+        }
+
+        return PlayerProfile(armor,
+            enderChest,
+            items,
+            stats["can-fly"] as Boolean,
+            stats["display-name"] as String,
+            stats["exhaustion"] as Float,
+            stats["exp"] as Float,
+            stats["flying"] as Boolean,
+            stats["food"] as Int,
+            NumberConversions.toDouble(stats["max-health"]),
+            NumberConversions.toDouble(stats["health"]),
+            GameMode.valueOf(stats["gamemode"] as String),
+            stats["level"] as Int,
+            stats["saturation"] as Float,
+            potionEffects,
+            stats["fallDistance"] as Float,
+            stats["fireTicks"] as Int,
+            stats["maxAir"] as Int,
+            stats["remainingAir"] as Int,
+            balance)
+    }
 }

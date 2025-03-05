@@ -46,7 +46,7 @@ class PlayerSpawnLocationListener @Inject constructor(private val dataSource: Da
                 ConsoleLogger.debug("onPlayerSpawn: spawnGroup=$spawnGroup, logoutGroup=$logoutGroup")
 
                 profileManager.addPlayerProfile(player, logoutGroup, player.gameMode)
-                profileManager.getPlayerData(player, spawnGroup, player.gameMode)
+                profileManager.loadPlayerData(player, spawnGroup, player.gameMode)
             }
         }
     }

@@ -47,7 +47,7 @@ class PlayerGameModeChangeListener @Inject constructor(private val groupManager:
         Bukkit.getPluginManager().callEvent(loadEvent)
         if (!loadEvent.isCancelled) {
             ConsoleLogger.fine("onPlayerChangedGameMode: Loading profile for '${player.name}'")
-            profileManager.getPlayerData(player, group, event.newGameMode)
+            profileManager.loadPlayerData(player, group, event.newGameMode)
         }
     }
 }

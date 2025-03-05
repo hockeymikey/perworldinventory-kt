@@ -103,7 +103,7 @@ class PlayerChangedWorldListener @Inject constructor(private val plugin: PerWorl
         Bukkit.getPluginManager().callEvent(loadEvent)
         if (!loadEvent.isCancelled)
         {
-            profileManager.getPlayerData(player, groupTo, player.gameMode)
+            profileManager.loadPlayerData(player, groupTo, player.gameMode)
         }
     }
 }

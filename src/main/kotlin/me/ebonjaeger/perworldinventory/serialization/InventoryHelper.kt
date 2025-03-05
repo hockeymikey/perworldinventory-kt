@@ -70,4 +70,36 @@ object InventoryHelper
 
         return contents
     }
+
+    /**
+     * Gets an ItemStack array from serialized inventory contents.
+     *
+     * @param array The array of items to deserialize
+     * @param size The expected size of the inventory; can be greater than expected
+     * @param format The data format being used
+     * @return An array of ItemStacks
+     */
+    fun flexiableDeserialize(array: JSONArray, format: Int): Array<out ItemStack>
+    {
+        val contents = mutableListOf<ItemStack>()
+
+        for (i in 0 until array.size) {
+            try {
+                val obj = array[i] as JSONObject
+                val index = obj["index"] as Int
+                val item = ItemSerializer.deserialize(obj, format)
+
+                // Ensure the list is large enough to accommodate the index.
+                while (contents.size <= index) {
+                    contents.add(ItemStack(Material.AIR))
+                }
+
+                contents[index] = item
+            } catch (ex: Exception) {
+                ConsoleLogger.warning("Failed to deserialize item in inventory:", ex)
+            }
+        }
+
+        return contents.toTypedArray()
+    }
 }
