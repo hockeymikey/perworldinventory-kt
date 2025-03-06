@@ -63,16 +63,16 @@ class ExportService @Inject constructor(private val plugin: PerWorldInventory,
     fun finishConversion(converted: Int) {
         converting = false
 
-        val mvInventory = pluginManager.getPlugin("Multiverse-Inventories")
-        if (mvInventory != null && pluginManager.isPluginEnabled(mvInventory)) {
-            pluginManager.disablePlugin(mvInventory)
-        }
-
         ConsoleLogger.info("Data conversion has been completed! Converted $converted profiles.")
         if (sender != null && sender is Player) {
             if ((sender as Player).isOnline) {
                 (sender as Player).sendMessage("${ChatColor.GREEN}» ${ChatColor.GRAY}Data conversion has been completed!")
             }
+        }
+
+        val pwi = pluginManager.getPlugin("PerWorldInventory")
+        if (pwi != null && pluginManager.isPluginEnabled(pwi)) {
+            pluginManager.disablePlugin(pwi)
         }
     }
 
