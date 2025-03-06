@@ -4,6 +4,7 @@ import ch.jalu.injector.annotations.NoMethodScan
 import com.onarandombox.multiverseinventories.MultiverseInventories
 import com.onarandombox.multiverseinventories.WorldGroup
 import com.onarandombox.multiverseinventories.profile.WorldGroupManager
+import com.onarandombox.multiverseinventories.share.Sharables
 import me.ebonjaeger.perworldinventory.ConsoleLogger
 import me.ebonjaeger.perworldinventory.Group
 import me.ebonjaeger.perworldinventory.GroupManager
@@ -82,13 +83,19 @@ class ExportService @Inject constructor(private val plugin: PerWorldInventory,
             val mvg = mvgm.getGroup(group.name)
 
             if (mvg == null) {
-                val worldGroup = WorldGroupReflection.createWorldGroup(mvInventory, group.name)
+                val worldGroup = mvgm.newEmptyGroup(group.name)
                 worldGroup?.addWorlds(group.worlds)
-                worldGroup?.spawnWorld = group.respawnWorld
+                if (group.respawnWorld != null) {
+                    worldGroup?.spawnWorld = group.respawnWorld
+                }
+                worldGroup.shares.addAll(Sharables.allOf())
                 mvgm.updateGroup(worldGroup)
             } else {
                 mvg.addWorlds(group.worlds)
-                mvg.spawnWorld = group.respawnWorld
+                if (group.respawnWorld != null) {
+                    mvg?.spawnWorld = group.respawnWorld
+                }
+                mvgm.updateGroup(mvg)
             }
         }
     }

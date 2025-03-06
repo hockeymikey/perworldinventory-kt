@@ -161,6 +161,7 @@ class PerWorldInventory : JavaPlugin
         commandManager.registerCommand(HelpCommand(this))
         commandManager.registerCommand(injector.getSingleton(ReloadCommand::class))
         commandManager.registerCommand(injector.getSingleton(ConvertCommand::class))
+        commandManager.registerCommand(injector.getSingleton(ExportCommand::class))
         commandManager.registerCommand(injector.getSingleton(GroupCommands::class))
         commandManager.registerCommand(injector.getSingleton(MigrateCommand::class))
     }

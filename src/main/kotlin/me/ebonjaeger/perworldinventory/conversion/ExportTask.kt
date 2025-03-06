@@ -113,8 +113,8 @@ class ExportTask (private val exportService: ExportService,
 
                     if (playerProfile != null) {
                         val data = pwiToMv(player, playerProfile, gameMode, pwiGroup)
-
-                        mvGroup.groupProfileContainer.addPlayerData(data)
+                        mvInventory.data.updatePlayerData(data)
+                        converted++
                     }
                 } catch (ex: Exception) {
                     ConsoleLogger.severe("Error converting data for '${player.name}' in group '${pwiGroup.name}' for GameMode '$gameMode", ex)

@@ -82,7 +82,7 @@ class GroupManagerTest {
 
         // then
         val expected = mockGroup(name, worlds, gameMode)
-        val actual = groupManager.getGroup(name.toLowerCase())
+        val actual = groupManager.getGroup(name.lowercase())
 
         assertThat(actual, equalTo(expected))
     }

@@ -4,6 +4,9 @@ import me.ebonjaeger.perworldinventory.data.PlayerProfile
 import net.minidev.json.JSONArray
 import net.minidev.json.JSONObject
 import org.bukkit.GameMode
+import org.bukkit.Material
+import org.bukkit.inventory.ItemStack
+import org.bukkit.potion.PotionEffect
 import org.bukkit.util.NumberConversions
 
 object PlayerSerializer
@@ -27,7 +30,12 @@ object PlayerSerializer
                 eChestSize,
                 format)
         val stats = StatSerializer.validateStats(data["stats"] as JSONObject, playerName)
-        val potionEffects = PotionSerializer.deserialize(stats["potion-effects"] as JSONArray)
+        var potionEffects: MutableCollection<PotionEffect>? = null
+        if (stats["potion-effects"] is String) {
+            potionEffects = mutableListOf<PotionEffect>()
+        } else {
+            potionEffects = PotionSerializer.deserialize(stats["potion-effects"] as JSONArray)
+        }
         val balance = if (data.containsKey("economy"))
         {
             EconomySerializer.deserialize(data["economy"] as JSONObject)
@@ -68,19 +76,47 @@ object PlayerSerializer
         }
 
         val inventory = data["inventory"] as JSONObject
-        val items = InventoryHelper.flexiableDeserialize(inventory["inventory"] as JSONArray,
-            format)
-        val armor = InventoryHelper.deserialize(inventory["armor"] as JSONArray, 4, format)
-        val enderChest = InventoryHelper.flexiableDeserialize(data["ender-chest"] as JSONArray,
-            format)
+
+        var items: Array<out ItemStack> = Array(36) { ItemStack(Material.AIR) }
+        if (inventory["inventory"] != null) {
+            items = InventoryHelper.flexiableDeserialize(inventory["inventory"] as JSONArray,  format)
+        }
+
+        var armor: Array<out ItemStack> = Array(4) { ItemStack(Material.AIR) }
+        if (inventory["armor"] != null) {
+            armor = InventoryHelper.deserialize(inventory["armor"] as JSONArray, 4, format)
+        }
+
+        var enderChest: Array<out ItemStack> = Array(27) { ItemStack(Material.AIR) }
+        if (inventory["ender-chest"] != null) {
+            items = InventoryHelper.flexiableDeserialize(inventory["ender-chest"] as JSONArray,  format)
+        }
+
         val stats = StatSerializer.validateStats(data["stats"] as JSONObject, playerName)
-        val potionEffects = PotionSerializer.deserialize(stats["potion-effects"] as JSONArray)
+        var potionEffects: MutableCollection<PotionEffect>? = null
+        if (stats["potion-effects"] is String || stats["potion-effects"] == null) {
+            potionEffects = mutableListOf<PotionEffect>()
+        } else {
+            potionEffects = PotionSerializer.deserialize(stats["potion-effects"] as JSONArray)
+        }
         val balance = if (data.containsKey("economy"))
         {
             EconomySerializer.deserialize(data["economy"] as JSONObject)
         } else
         {
             0.0
+        }
+
+        if (stats["exp"] is Int) {
+            stats["exp"] = (stats["exp"] as Int).toFloat()
+        }
+
+        if (stats["saturation"] is Int) {
+            stats["saturation"] = (stats["saturation"] as Int).toFloat()
+        }
+
+        if (stats["exhaustion"] is Int) {
+            stats["exhaustion"] = (stats["exhaustion"] as Int).toFloat()
         }
 
         return PlayerProfile(armor,

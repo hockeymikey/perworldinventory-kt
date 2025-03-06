@@ -115,6 +115,7 @@ class ConvertTask (private val convertService: ConvertService,
 
                         val data = mvToPwi(playerProfile, gameMode)
                         FileWriter(file).use { writer -> writer.write(data.toJSONString(JSONStyle.LT_COMPRESS)) }
+                        converted++
                     }
                 } catch (ex: Exception) {
                     ConsoleLogger.severe("Error converting data for '${player.name}' in group '${ourGroup.name}' for GameMode '$gameMode", ex)

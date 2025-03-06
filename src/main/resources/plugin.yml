@@ -15,6 +15,7 @@ permissions:
     default: op
     children:
       perworldinventory.command.convert: true
+      perworldinventory.command.export: true
       perworldinventory.command.help: true
       perworldinventory.command.reload: true
       perworldinventory.command.version: true

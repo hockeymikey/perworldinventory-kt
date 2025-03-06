@@ -85,7 +85,7 @@ class GroupCommands @Inject constructor(private val groupManager: GroupManager) 
         // Get the GameMode
         val gameMode = try
         {
-            GameMode.valueOf(defaultGameMode.toUpperCase())
+            GameMode.valueOf(defaultGameMode.uppercase())
         } catch (ex: IllegalArgumentException)
         {
             sender.sendMessage("${ChatColor.DARK_RED}» ${ChatColor.GRAY}'$defaultGameMode' is not a valid GameMode!")

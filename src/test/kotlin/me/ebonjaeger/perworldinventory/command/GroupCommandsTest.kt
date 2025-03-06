@@ -1,21 +1,23 @@
 package me.ebonjaeger.perworldinventory.command
 
-import io.mockk.every
-import io.mockk.just
-import io.mockk.mockk
-import io.mockk.mockkClass
-import io.mockk.runs
-import io.mockk.verify
+import io.mockk.*
 import me.ebonjaeger.perworldinventory.Group
 import me.ebonjaeger.perworldinventory.GroupManager
 import me.ebonjaeger.perworldinventory.TestHelper
 import me.ebonjaeger.perworldinventory.TestHelper.mockGroup
 import org.bukkit.Bukkit
 import org.bukkit.GameMode
+import org.bukkit.Server
 import org.bukkit.World
 import org.bukkit.command.CommandSender
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.io.IO.println
+import java.io.InputStream
+import java.lang.reflect.Constructor
+import java.util.logging.LogManager
+import java.util.logging.Logger
 import kotlin.test.assertEquals
 
 /**
@@ -262,5 +264,20 @@ class GroupCommandsTest
         val expected = Group("test", mutableSetOf("test", "bob"), GameMode.SURVIVAL, "bob")
         assertEquals(expected, group)
         verify { groupManager.saveGroups() }
+    }
+
+    companion object {
+        @JvmStatic
+        @BeforeAll
+        fun setAllMocks(): Unit {
+            val mockServer = mockk<Server>(relaxed = true)
+            val realLogger = Logger.getLogger("TestLogger")
+            val spyLogger = spyk(realLogger)
+
+            every { spyLogger.isLoggable(any()) } returns true // Or false, based on your needs
+
+            every { mockServer.logger } returns spyLogger
+            Bukkit.setServer(mockServer)
+        }
     }
 }

@@ -187,7 +187,7 @@ class ProfileManager @Inject constructor(private val bukkitService: BukkitServic
             return
         }
 
-        player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.baseValue = profile.maxHealth // Players have max health, this wont be null
+        player.getAttribute(Attribute.MAX_HEALTH)!!.baseValue = profile.maxHealth // Players have max health, this wont be null
 
         if (profile.health > 0 && profile.health <= profile.maxHealth) {
             player.health = profile.health
@@ -255,7 +255,7 @@ class ProfileManager @Inject constructor(private val bukkitService: BukkitServic
         }
         if (settings.getProperty(PlayerSettings.LOAD_HEALTH))
         {
-            player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.baseValue = PlayerDefaults.HEALTH // Players have max health, this wont be null
+            player.getAttribute(Attribute.MAX_HEALTH)!!.baseValue = PlayerDefaults.HEALTH // Players have max health, this wont be null
             player.health = PlayerDefaults.HEALTH
         }
         if (settings.getProperty(PlayerSettings.LOAD_LEVEL))

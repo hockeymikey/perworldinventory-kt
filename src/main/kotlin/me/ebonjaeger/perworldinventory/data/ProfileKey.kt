@@ -32,7 +32,7 @@ class ProfileKey(val uuid: UUID,
         return "ProfileKey{" +
                 "uuid='$uuid'" +
                 ", group='${group.name}'" +
-                ", gameMode='${gameMode.toString().toLowerCase()}'" +
+                ", gameMode='${gameMode.toString().lowercase()}'" +
                 "}"
     }
 }

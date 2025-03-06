@@ -91,7 +91,7 @@ data class Group(val name: String,
         return "Group{" +
                 "name='$name'" +
                 ", worlds=$worlds" +
-                ", defaultGameMode='${defaultGameMode.toString().toLowerCase()}'" +
+                ", defaultGameMode='${defaultGameMode.toString().lowercase()}'" +
                 ", respawnWorld='$respawnWorld'" +
                 ", isConfigured='$configured'" +
                 "}"

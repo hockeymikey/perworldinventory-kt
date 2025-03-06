@@ -47,7 +47,7 @@ class GroupManager @Inject constructor(@PluginFolder pluginFolder: File,
         group.configured = configured
         ConsoleLogger.fine("Adding group to memory: ${group.name}")
         ConsoleLogger.debug("Group properties: $group")
-        groups[name.toLowerCase()] = group
+        groups[name.lowercase()] = group
     }
 
     /**
@@ -58,7 +58,7 @@ class GroupManager @Inject constructor(@PluginFolder pluginFolder: File,
      * @return The Group
      */
     fun getGroup(name: String): Group?
-            = groups[name.toLowerCase()]
+            = groups[name.lowercase()]
 
     /**
      * Get the group that contains a specific world. This method iterates
@@ -95,7 +95,7 @@ class GroupManager @Inject constructor(@PluginFolder pluginFolder: File,
      */
     fun removeGroup(group: String)
     {
-        groups.remove(group.toLowerCase())
+        groups.remove(group.lowercase())
         ConsoleLogger.fine("Removed group '$group'")
     }
 
@@ -117,7 +117,7 @@ class GroupManager @Inject constructor(@PluginFolder pluginFolder: File,
 
                 section.getKeys(false).forEach { key ->
                     val worlds = yaml.getStringList("groups.$key.worlds").toMutableSet()
-                    val gameMode = GameMode.valueOf( (yaml.getString("groups.$key.default-gamemode") ?: "SURVIVAL").toUpperCase() )
+                    val gameMode = GameMode.valueOf( (yaml.getString("groups.$key.default-gamemode") ?: "SURVIVAL").uppercase() )
                     val respawnWorld = if (yaml.contains("groups.$key.respawnWorld"))
                     {
                         yaml.getString("groups.$key.respawnWorld")

@@ -54,7 +54,7 @@ data class PlayerProfile(val armor: Array<out ItemStack>,
             player.exp,
             player.isFlying,
             player.foodLevel,
-            player.getAttribute(Attribute.GENERIC_MAX_HEALTH)!!.baseValue, // If this is ever null, I will be very surprised
+            player.getAttribute(Attribute.MAX_HEALTH)!!.baseValue, // If this is ever null, I will be very surprised
             player.health,
             player.gameMode,
             player.level,

@@ -1,9 +1,6 @@
 package me.ebonjaeger.perworldinventory
 
-import io.mockk.every
-import io.mockk.mockkClass
-import io.mockk.mockkStatic
-import io.mockk.slot
+import io.mockk.*
 import me.ebonjaeger.perworldinventory.serialization.ItemMetaTestImpl
 import org.bukkit.Bukkit
 import org.bukkit.GameMode
@@ -14,6 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta
 import java.io.File
 import java.net.URI
 import java.net.URISyntaxException
+import java.util.logging.Logger
 
 /**
  * Test utilities.
@@ -109,7 +107,7 @@ object TestHelper
         every { itemFactory.equals(any(), isNull()) } returns false
         every { itemFactory.isApplicable(ofType(ItemMeta::class), ofType(Material::class)) } returns true
         every { itemFactory.asMetaFor(capture(metaArg), ofType(Material::class)) } answers { metaArg.captured }
-        every { itemFactory.updateMaterial(ofType(ItemMeta::class), capture(materialArg)) } answers { materialArg.captured }
+        //every { itemFactory.updateMaterial(ofType(ItemMeta::class), capture(materialArg)) } answers { materialArg.captured }
 
         return itemFactory
     }
